@@ -13,6 +13,7 @@ def home():
     return render_template("index.html")
 
 @app.route("/chat", methods=["POST"])
+@app.route("/api/chat", methods=["POST"])
 def chat():
     try:
         data = request.json
