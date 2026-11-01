@@ -5,8 +5,8 @@ import os
 
 app = Flask(__name__)
 
-# --- API ANAHTARIN BURADA GİZLİ KALIYOR ---
-GEMINI_API_KEY = "AQ.Ab8RN6JHYbAm7_oGHxUBH5ZjsIVD_ZUlTnqMIgGBnM_S3sdOWw"
+# --- API ANAHTARIN ---
+GEMINI_API_KEY = "AQ.Ab8RN6JKlEQwHuT6G1qspEreqj5wZrbtoTRNm1xl1VJhNbtbTA"
 
 @app.route("/")
 def home():
@@ -23,8 +23,8 @@ def chat():
         if not user_message:
             return jsonify({"error": "Boş mesaj gönderilemez"}), 400
 
-        # Google Gemini API Çağrısı
-        url = f"https://generativelanguage.googleapis.com/v1/models/{model}:generateContent?key={GEMINI_API_KEY}"
+        # Google Gemini API Çağrısı (v1beta ve güncel model yolu)
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
         payload = {"contents": [{"parts": [{"text": user_message}]}]}
         headers = {'Content-Type': 'application/json'}
 
