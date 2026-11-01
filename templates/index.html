@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNEX 1.0 - Yapay Zeka Asistanı</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #11111b; color: #cdd6f4; }
+        .sidebar { width: 260px; background-color: #181825; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; border-right: 1px solid #313244; }
+        .logo { font-size: 1.4rem; font-weight: bold; color: #cba6f7; margin-bottom: 20px; }
+        .menu-btn { background: transparent; color: #cdd6f4; border: none; padding: 10px; text-align: left; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 5px; }
+        .menu-btn:hover { background-color: #313244; }
+        .profile { display: flex; align-items: center; gap: 10px; padding: 10px; background-color: #11111b; border-radius: 8px; }
+        .avatar { width: 32px; height: 32px; background-color: #89b4fa; color: #11111b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .main-chat { flex: 1; display: flex; flex-direction: column; background-color: #1e1e2e; }
+        .top-bar { padding: 15px; background-color: #181825; border-bottom: 1px solid #313244; color: #a6e3a1; font-weight: bold; font-size: 0.9rem; }
+        .chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .msg { max-width: 80%; padding: 12px 16px; border-radius: 10px; line-height: 1.5; white-space: pre-wrap; }
+        .msg.user { background-color: #313244; color: #cdd6f4; align-self: flex-end; }
+        .msg.ai { background-color: #181825; color: #cdd6f4; align-self: flex-start; border: 1px solid #313244; }
+        .input-bar { padding: 15px; background-color: #181825; display: flex; gap: 10px; border-top: 1px solid #313244; }
+        .input-bar input { flex: 1; padding: 12px; background-color: #313244; border: 1px solid #45475a; color: #cdd6f4; border-radius: 8px; outline: none; }
+        .btn { background-color: #313244; color: #cdd6f4; border: none; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-send { background-color: #89b4fa; color: #11111b; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <div class="logo">⚡ SNEX 1.0</div>
+            <button class="menu-btn" onclick="location.reload()">✏️ Yeni Sohbet</button>
+            <button class="menu-btn" onclick="alert('Kitaplık modülü aktif.')">📚 Kitaplık</button>
+            <button class="menu-btn" onclick="alert('Resimler & Kod Motoru.')">🎨 Resimler / Kod</button>
+        </div>
+        <div class="profile">
+            <div class="avatar">H</div>
+            <div style="font-size: 0.85rem; font-weight: bold;">Hüseyin (SNEX Dev)</div>
+        </div>
+    </div>
+
+    <div class="main-chat">
+        <div class="top-bar" id="status">● SNEX 1.0 Canlı Sunucu Hazır</div>
+        <div class="chat-box" id="chatBox">
+            <div class="msg ai">⚡ SNEX 1.0: Selam patron! İnternet sunucuma bağlandın. API Key girmene gerek yok, direk yazabilirsin!</div>
+        </div>
+        <div class="input-bar">
+            <button class="btn" onclick="copyLast()">📋 Kopyala</button>
+            <input type="text" id="userInput" placeholder="SNEX 1.0'a mesaj yaz..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <button class="btn btn-send" onclick="sendMsg()">Gönder ➔</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMsg() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const status = document.getElementById('status');
+            const text = input.value.trim();
+            if(!text) return;
+
+            chatBox.innerHTML += `<div class="msg user">👤 Sen: ${text}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            status.innerText = '● SNEX 1.0 Düşünüyor...';
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                if(data.reply) {
+                    chatBox.innerHTML += `<div class="msg ai">⚡ SNEX 1.0: ${data.reply}</div>`;
+                    status.innerText = '● SNEX 1.0 Aktif';
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch(e) {
+                chatBox.innerHTML += `<div class="msg ai" style="color:#f38ba8;">⚡ Hata: ${e.message}</div>`;
+                status.innerText = '● Bağlantı Hatası';
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function copyLast() {
+            const msgs = document.getElementsByClassName('msg');
+            if(msgs.length) {
+                navigator.clipboard.writeText(msgs[msgs.length-1].innerText);
+                alert('Son mesaj kopyalandı!');
+            }
+        }
+    </script>
+</body>
+</html>
