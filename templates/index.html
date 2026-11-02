@@ -3,54 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNEX 1.0 - AI Workspace</title>
+    <title>SNEX 1.0 - Advanced AI Workspace</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f111a; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: #0b0f19; color: #f3f4f6; display: flex; height: 100vh; overflow: hidden; }
         
         /* Sol Menü */
-        .sidebar { width: 260px; background-color: #161925; border-right: 1px solid #232738; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; }
-        .sidebar-top h0, .sidebar-top h1 { font-size: 20px; font-weight: bold; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .sidebar-menu { display: flex; flex-direction: column; gap: 10px; }
-        .sidebar-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 8px; color: #94a3b8; cursor: pointer; transition: all 0.2s; font-size: 14px; }
-        .sidebar-menu-item:hover, .sidebar-menu-item.active { background-color: #252b42; color: #fff; }
+        .sidebar { width: 280px; background-color: #111827; border-right: 1px solid #1f2937; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
+        .logo-area { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 35px; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 8px; }
+        .sidebar-menu-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 10px; color: #9ca3af; cursor: pointer; transition: all 0.25s ease; font-size: 14px; font-weight: 500; }
+        .sidebar-menu-item:hover, .sidebar-menu-item.active { background-color: #1f2937; color: #fff; transform: translateX(4px); }
         
-        .sidebar-user { display: flex; align-items: center; gap: 12px; padding-top: 15px; border-top: 1px solid #232738; }
-        .avatar { width: 35px; height: 35px; background: #6366f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; }
+        .sidebar-user { display: flex; align-items: center; gap: 12px; padding-top: 18px; border-top: 1px solid #1f2937; }
+        .avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; }
         
-        /* Ana İçerik Alanı */
-        .main-content { flex: 1; display: flex; flex-direction: column; background-color: #0f111a; position: relative; }
-        .header { padding: 20px 30px; border-bottom: 1px solid #232738; display: flex; justify-content: space-between; align-items: center; background: #131520; }
+        /* Ana İçerik Ekranı */
+        .main-content { flex: 1; display: flex; flex-direction: column; background-color: #0b0f19; position: relative; }
+        .header { padding: 20px 32px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; background: #0f172a; }
         
-        .tab-panel { display: none; flex: 1; flex-direction: column; height: calc(100vh - 73px); overflow-y: auto; padding: 25px; }
+        .tab-panel { display: none; flex: 1; flex-direction: column; height: calc(100vh - 77px); overflow-y: auto; padding: 30px; }
         .tab-panel.active { display: flex; }
         
-        /* Sohbet Alanı */
-        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .message { padding: 15px 20px; border-radius: 12px; max-width: 75%; line-height: 1.5; font-size: 14px; word-break: break-word; }
-        .message.bot { background-color: #1e2235; align-self: flex-start; border-left: 4px solid #6366f1; }
-        .message.user { background-color: #6366f1; color: white; align-self: flex-end; }
+        /* Sohbet Bölümü */
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+        .message { padding: 16px 22px; border-radius: 14px; max-width: 80%; line-height: 1.6; font-size: 14px; word-break: break-word; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .message.bot { background-color: #1e293b; align-self: flex-start; border-left: 4px solid #6366f1; color: #e2e8f0; }
+        .message.user { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; align-self: flex-end; }
         
-        .chat-input-area { padding: 20px; background: #131520; border-top: 1px solid #232738; display: flex; gap: 15px; }
-        .chat-input-area input { flex: 1; background: #1a1e2e; border: 1px solid #2d334a; padding: 14px 20px; border-radius: 10px; color: #fff; outline: none; font-size: 14px; }
+        .chat-input-area { padding: 24px; background: #0f172a; border-top: 1px solid #1f2937; display: flex; gap: 16px; align-items: center; }
+        .chat-input-area input { flex: 1; background: #1e293b; border: 1px solid #334155; padding: 16px 20px; border-radius: 12px; color: #fff; outline: none; font-size: 15px; transition: border-color 0.2s; }
         .chat-input-area input:focus { border-color: #6366f1; }
-        .chat-input-area button { background: #6366f1; color: white; border: none; padding: 0 25px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-        .chat-input-area button:hover { background: #4f46e5; }
+        .chat-input-area button { background: #6366f1; color: white; border: none; padding: 0 28px; height: 52px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s; font-size: 14px; }
+        .chat-input-area button:hover { background: #4f46e5; transform: translateY(-1px); }
         
-        /* Diğer Paneller İçin Tasarım */
-        .panel-card { background: #161925; border: 1px solid #232738; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
-        .panel-card h2 { margin-bottom: 15px; color: #fff; font-size: 18px; }
-        .panel-card p { color: #94a3b8; font-size: 14px; }
+        /* Kitaplık, Kod ve Ayar Kartları */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .panel-card { background: #111827; border: 1px solid #1f2937; padding: 24px; border-radius: 14px; transition: border-color 0.2s; }
+        .panel-card:hover { border-color: #374151; }
+        .panel-card h2 { margin-bottom: 10px; color: #fff; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .panel-card p { color: #9ca3af; font-size: 14px; line-height: 1.5; }
+        
+        .badge { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <!-- Sol Menü -->
     <div class="sidebar">
-        <div class="sidebar-top">
-            <h1>⚡ SNEX 1.0</h1>
+        <div>
+            <div class="logo-area">⚡ SNEX 1.0</div>
             <div class="sidebar-menu">
-                <div class="sidebar-menu-item active" onclick="switchTab('chat', this)">💬 Sohbet</div>
+                <div class="sidebar-menu-item active" onclick="switchTab('chat', this)">💬 Sohbet Workspace</div>
                 <div class="sidebar-menu-item" onclick="switchTab('library', this)">📚 Kitaplık</div>
                 <div class="sidebar-menu-item" onclick="switchTab('tools', this)">🛠️ Resimler / Kod</div>
                 <div class="sidebar-menu-item" onclick="switchTab('settings', this)">⚙️ Ayarlar</div>
@@ -59,57 +63,80 @@
         <div class="sidebar-user">
             <div class="avatar">H</div>
             <div>
-                <div style="font-weight: bold; font-size: 14px;">Hüseyin</div>
-                <div style="font-size: 11px; color: #94a3b8;">SNEX Developer</div>
+                <div style="font-weight: bold; font-size: 14px; color: #fff;">Hüseyin</div>
+                <div style="font-size: 12px; color: #9ca3af;">SNEX Developer</div>
             </div>
         </div>
     </div>
 
-    <!-- Sağ Ana İçerik -->
+    <!-- Sağ Ana Panel -->
     <div class="main-content">
         <div class="header">
-            <span id="header-title" style="font-weight: bold; font-size: 16px;">Sohbet Workspace</span>
-            <span style="font-size: 12px; color: #10b981;">● SNEX 1.0 Sunucusu Bağlı</span>
+            <span id="header-title" style="font-weight: 600; font-size: 16px; color: #e2e8f0;">Sohbet Workspace</span>
+            <span class="badge">● SNEX 1.0 Çevrimiçi</span>
         </div>
 
-        <!-- 1. SOHBET PANELİ -->
+        <!-- 1. SOHBET SEKMESİ -->
         <div id="panel-chat" class="tab-panel active">
             <div class="chat-messages" id="chatMessages">
-                <div class="message bot">⚡ <b>SNEX 1.0:</b> Hoş geldin patron! İstediğin dilde (Türkçe dahil) sohbet edebilirsin, hazırım!</div>
+                <div class="message bot">⚡ <b>SNEX 1.0:</b> Selam patron! Claude'a meydan okuduğunu gördüm, sahalardayız! Hangi dilde istersen sohbet edebiliriz, hazırım.</div>
             </div>
             <div class="chat-input-area">
-                <input type="text" id="userInput" placeholder="SNEX 1.0'a bir mesaj yazın..." onkeypress="handleKeyPress(event)">
+                <input type="text" id="userInput" placeholder="SNEX 1.0'a bir şeyler yaz..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Gönder</button>
             </div>
         </div>
 
-        <!-- 2. KİTAPLIK PANELİ -->
+        <!-- 2. KİTAPLIK SEKMESİ -->
         <div id="panel-library" class="tab-panel">
-            <div class="panel-card">
-                <h2>📚 Bilgi Kitaplığı</h2>
-                <p>Burada kaydettiğin promptlar, önemli kod blokları ve çalışma notların yer alacak.</p>
+            <h2 style="margin-bottom: 8px; color: #fff;">📚 Bilgi Kitaplığı</h2>
+            <p style="color: #9ca3af; margin-bottom: 24px;">Kaydedilen özel prompt şablonları ve kaynaklar.</p>
+            <div class="card-grid">
+                <div class="panel-card">
+                    <h2>🚀 Roblox Luau Kodları</h2>
+                    <p>Roblox Studio geliştirme süreçleri için hazırlanan özel script şablonları.</p>
+                </div>
+                <div class="panel-card">
+                    <h2>💡 Sistem Promptları</h2>
+                    <p>SNEX 1.0'ın çok dilli yanıt verme motorunu besleyen ana yönergeler.</p>
+                </div>
             </div>
         </div>
 
-        <!-- 3. RESİMLER / KOD PANELİ -->
+        <!-- 3. RESİMLER / KOD SEKMESİ -->
         <div id="panel-tools" class="tab-panel">
-            <div class="panel-card">
-                <h2>🛠️ Resim ve Kod Araçları</h2>
-                <p>Özel kod üretme, snippet yönetimi ve görsel işleme araçları bu alanda çalışacak.</p>
+            <h2 style="margin-bottom: 8px; color: #fff;">🛠️ Resim ve Kod Araçları</h2>
+            <p style="color: #9ca3af; margin-bottom: 24px;">Görsel işleme ve otomatik kod üretim modülleri.</p>
+            <div class="card-grid">
+                <div class="panel-card">
+                    <h2>🖼️ Görsel Üretici</h2>
+                    <p>Yapay zeka tabanlı konsept ve asset tasarım paneli (Yapım aşamasında).</p>
+                </div>
+                <div class="panel-card">
+                    <h2>⚡ Hızlı Script Editörü</h2>
+                    <p>Python ve Luau kod bloklarını test etmek için entegre çalışma alanı.</p>
+                </div>
             </div>
         </div>
 
-        <!-- 4. AYARLAR PANELİ -->
+        <!-- 4. AYARLAR SEKMESİ -->
         <div id="panel-settings" class="tab-panel">
-            <div class="panel-card">
-                <h2>⚙️ Sistem Ayarları</h2>
-                <p>SNEX 1.0 arayüz tema tercihleri, model yapılandırmaları ve sistem ayarları.</p>
+            <h2 style="margin-bottom: 8px; color: #fff;">⚙️ Sistem Ayarları</h2>
+            <p style="color: #9ca3af; margin-bottom: 24px;">SNEX 1.0 arayüz ve model yapılandırmaları.</p>
+            <div class="card-grid">
+                <div class="panel-card">
+                    <h2>🎨 Tema & Görünüm</h2>
+                    <p>Koyu tema optimizasyonları ve özel renk paleti yönetimi.</p>
+                </div>
+                <div class="panel-card">
+                    <h2>🔌 Bağlantı Modu</h2>
+                    <p>Anahtarsız, kesintisiz ve çok dilli akıllı bulut sunucu entegrasyonu aktif.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Sekme Değiştirme Fonksiyonu
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.sidebar-menu-item').forEach(i => i.classList.remove('active'));
@@ -119,29 +146,25 @@
 
             const titles = {
                 'chat': 'Sohbet Workspace',
-                'library': 'Kitaplık Workspace',
+                'library': 'Kitaplık ve Kaynaklar',
                 'tools': 'Resimler ve Kod Araçları',
                 'settings': 'Sistem Ayarları'
             };
             document.getElementById('header-title').innerText = titles[tabId];
         }
 
-        // Mesaj Gönderme Fonksiyonu
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
             if (!message) return;
 
             const chatMessages = document.getElementById('chatMessages');
-            
-            // Kullanıcı mesajını ekle
             chatMessages.innerHTML += `<div class="message user">${escapeHtml(message)}</div>`;
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Bekliyor balonu
             const loadingId = 'loading-' + Date.now();
-            chatMessages.innerHTML += `<div class="message bot" id="${loadingId}">SNEX düşünüyor...</div>`;
+            chatMessages.innerHTML += `<div class="message bot" id="${loadingId}">SNEX 1.0 düşünüyor...</div>`;
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             try {
@@ -157,7 +180,7 @@
                 if (data.reply) {
                     chatMessages.innerHTML += `<div class="message bot">⚡ <b>SNEX 1.0:</b> ${escapeHtml(data.reply)}</div>`;
                 } else {
-                    chatMessages.innerHTML += `<div class="message bot" style="color: #f87171;">Hata: ${data.error || 'Bilinmeyen hata'}</div>`;
+                    chatMessages.innerHTML += `<div class="message bot" style="color: #f87171;">Hata: ${escapeHtml(data.error || 'Bilinmeyen hata')}</div>`;
                 }
             } catch (err) {
                 document.getElementById(loadingId).remove();
