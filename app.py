@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify
+import urllib.request
+import json
 import os
 
 app = Flask(__name__)
@@ -17,11 +19,19 @@ def chat():
         if not user_message:
             return jsonify({"error": "Boş mesaj gönderilemez"}), 400
 
-        # API anahtarı veya harici sunucu bağımlılığı yok! 
-        # Doğrudan arayüzün akıcı çalışması için örnek simüle edilmiş yanıt döndürür.
-        simulated_reply = f"SNEX 1.0 (Anahtarsız Mod): '{user_message}' mesajını aldım! Sistem tamamen stabil çalışıyor. 🚀"
+        # --- SIFIR API KEY / GÜVENLİ VE GERÇEK CEVAP ÜRETEN UÇ NOKTA ---
+        # Polllinations AI - Kayıt yok, Key yok, Sınır yok!
+        encoded_msg = urllib.parse.quote(user_message)
+        url = f"https://text.pollinations.ai/{encoded_msg}?model=openai"
+        
+        req = urllib.request.Request(
+            url, 
+            headers={'User-Agent': 'Mozilla/5.0'}
+        )
 
-        return jsonify({"reply": simulated_reply})
+        with urllib.request.urlopen(req) as response:
+            ai_reply = response.read().decode("utf-8")
+            return jsonify({"reply": ai_reply})
 
     except Exception as e:
         return jsonify({"error": f"Sunucu hatası: {str(e)}"}), 500
