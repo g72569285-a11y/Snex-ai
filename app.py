@@ -1,4 +1,4 @@
-,from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify
 import urllib.request
 import json
 import os
@@ -19,7 +19,6 @@ def chat():
         if not user_message:
             return jsonify({"error": "Boş mesaj gönderilemez"}), 400
 
-        # Çok dilli destek ve limit takılmayan güvenli istek yapısı
         url = "https://text.pollinations.ai/"
         payload = {
             "messages": [
