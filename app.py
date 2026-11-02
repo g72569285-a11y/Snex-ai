@@ -5,8 +5,8 @@ import os
 
 app = Flask(__name__)
 
-# --- API ANAHTARIN ---
-GEMINI_API_KEY = "AQ.Ab8RN6Kx2F8Dqn824HL7nRhFf4TGi4XMaNmMm6qJS_BJh_ofeg"
+# --- GÜNCEL VE DOĞRUDAN ÇALIŞAN API ANAHTARIN ---
+GEMINI_API_KEY = "AQ.Ab8RN6KZ78nZWsgQVNrhmKVZfzgcw-pFgtKbA6DRY19MZk-MQA"
 
 @app.route("/")
 def home():
